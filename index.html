@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHaven - Sustainable Home Living</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; line-height: 1.6; color: #2c3e50; background: #f9f9f9; }
+        
+        /* Header - Natural */
+        .header { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(39,174,96,0.3); }
+        .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .logo { font-size: 1.8rem; font-weight: 700; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a { color: white; text-decoration: none; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 0.8; }
+        .nav-icons { display: flex; gap: 1rem; align-items: center; }
+        .search-icon, .cart-icon { font-size: 1.2rem; cursor: pointer; }
+        .cart-count { background: #e74c3c; border-radius: 50%; padding: 0.2rem 0.5rem; font-size: 0.8rem; margin-left: 0.3rem; }
+        
+        /* Hero - Green Harmony */
+        .hero { display: flex; align-items: center; max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; background: linear-gradient(to right, #e8f5e8, #d5dbdb); min-height: 60vh; }
+        .hero-content { flex: 1; padding-right: 2rem; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; color: #27ae60; }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .cta-button { background: #27ae60; color: white; border: none; padding: 1rem 2rem; font-size: 1.1rem; border-radius: 25px; cursor: pointer; transition: background 0.3s; }
+        .cta-button:hover { background: #229954; }
+        .hero-slider { flex: 1; position: relative; }
+        .slide { width: 100%; height: 400px; object-fit: cover; border-radius: 10px; display: none; }
+        .slide.active { display: block; }
+        .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(39,174,96,0.7); color: white; border: none; padding: 1rem; cursor: pointer; border-radius: 50%; }
+        .prev { left: -1rem; }
+        .next { right: -1rem; }
+        
+        /* Promo - Eco Deal */
+        .promo-banner { background: linear-gradient(135deg, #52be80 0%, #58d68d 100%); padding: 3rem 2rem; text-align: center; color: #2c3e50; }
+        .banner-content h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .banner-content p { font-size: 1.1rem; margin-bottom: 1rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .promo-timer { background: white; padding: 1rem; border-radius: 5px; margin: 1rem 0; font-size: 1.2rem; font-weight: 700; }
+        .banner-button { background: #27ae60; color: white; border: none; padding: 1rem 2rem; font-size: 1.1rem; border-radius: 25px; cursor: pointer; margin-top: 1rem; }
+        
+        /* About - Earthy */
+        .about { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; display: flex; gap: 4rem; align-items: center; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .about-text { flex: 1; padding: 2rem; }
+        .about-text h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #27ae60; }
+        .about-text p { font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .stats { display: flex; gap: 2rem; margin-top: 2rem; justify-content: space-around; }
+        .stat { text-align: center; }
+        .stat h3 { font-size: 2rem; color: #229954; margin-bottom: 0.5rem; }
+        .about-image { flex: 1; width: 100%; border-radius: 10px; }
+        
+        /* Trust Signals */
+        .trust-signals { background: #f9f9f9; padding: 2rem; display: flex; justify-content: space-around; flex-wrap: wrap; max-width: 1200px; margin: 2rem auto; }
+        .signal { width: 80px; height: 80px; border-radius: 50%; background: #27ae60; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 1rem; }
+        .signals-container p { text-align: center; max-width: 150px; color: #27ae60; font-weight: 600; }
+        
+        /* Products - Organic Grid */
+        .products { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; }
+        .products h2 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; color: #27ae60; }
+        .section-subtitle { text-align: center; font-size: 1.1rem; margin-bottom: 3rem; color: #7f8c8d; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .product-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(39,174,96,0.1); transition: box-shadow 0.3s, transform 0.3s; }
+        .product-card:hover { box-shadow: 0 8px 25px rgba(39,174,96,0.2); transform: translateY(-3px); }
+        .product-card img { width: 100%; height: 200px; object-fit: cover; }
+        .product-info { padding: 1.5rem; }
+        .product-info h3 { margin-bottom: 0.5rem; color: #27ae60; }
+        .price { font-size: 1.5rem; color: #27ae60; font-weight: 700; margin-bottom: 0.5rem; }
+        .description { margin-bottom: 1rem; color: #7f8c8d; }
+        .add-to-cart { background: #27ae60; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 20px; cursor: pointer; width: 100%; }
+        
+        /* Categories */
+        .categories { background: #f0f8f0; padding: 4rem 2rem; }
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto; }
+        .category-card { background: white; border-radius: 10px; overflow: hidden; text-align: center; box-shadow: 0 4px 15px rgba(39,174,96,0.1); transition: transform 0.3s; }
+        .category-card:hover { transform: translateY(-5px); }
+        .category-card img { width: 100%; height: 150px; object-fit: cover; }
+        .category-card h3 { padding: 1rem; color: #27ae60; }
+        .category-card p { padding: 0 1rem 1rem; color: #7f8c8d; }
+        
+        /* Brands */
+        .brands { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; text-align: center; }
+        .brands-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .brand-logo { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(39,174,96,0.1); transition: box-shadow 0.3s; }
+        .brand-logo:hover { box-shadow: 0 6px 20px rgba(39,174,96,0.2); }
+        .brand-logo img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 1rem; }
+        .brand-logo p { font-weight: 600; color: #27ae60; }
+        
+        /* Why Choose */
+        .why-choose { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 4rem 2rem; }
+        .why-choose h2 { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto; }
+        .feature { text-align: center; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .feature h3 { margin-bottom: 1rem; font-weight: 600; }
+        
+        /* Best Sellers */
+        .best-sellers { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .sellers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .seller-item { background: #f9f9f9; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; transition: box-shadow 0.3s; }
+        .seller-item:hover { box-shadow: 0 4px 20px rgba(39,174,96,0.2); }
+        .seller-item img { width: 100%; height: 180px; object-fit: cover; }
+        .seller-item h4 { padding: 1rem; color: #27ae60; }
+        .seller-item p { padding: 0 1rem 1rem; color: #e74c3c; font-weight: 700; }
+        
+        /* Testimonials */
+        .testimonials { background: #f0f8f0; padding: 4rem 2rem; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto; }
+        .testimonial { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(39,174,96,0.1); font-style: italic; }
+        .testimonial span { display: block; margin-top: 1rem; font-weight: 700; color: #27ae60; }
+        .stars { color: #f39c12; font-size: 1.2rem; margin-top: 1rem; }
+        .more-testimonial { background: #e8f5e8; padding: 1.5rem; border-radius: 5px; margin: 1rem 0; border-left: 4px solid #27ae60; }
+        
+        /* Blog */
+        .blog { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; }
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .blog-post { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: box-shadow 0.3s; }
+        .blog-post:hover { box-shadow: 0 6px 20px rgba(39,174,96,0.2); }
+        .blog-post img { width: 100%; height: 200px; object-fit: cover; }
+        .blog-post h3 { padding: 1rem; color: #27ae60; }
+        .blog-post p { padding: 0 1rem; color: #7f8c8d; }
+        .read-more { display: block; padding: 1rem; text-align: center; background: #27ae60; color: white; text-decoration: none; margin: 1rem; border-radius: 20px; }
+        
+        /* FAQ */
+        .faq { background: #f9f9f9; padding: 4rem 2rem; }
+        .faq-grid { max-width: 800px; margin: 3rem auto; }
+        .faq-item { background: white; margin-bottom: 1rem; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(39,174,96,0.05); cursor: pointer; }
+        .faq-item h3 { margin-bottom: 0.5rem; color: #27ae60; }
+        .faq-item p { color: #7f8c8d; display: none; }
+        
+        /* Newsletter */
+        .newsletter { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; text-align: center; padding: 3rem 2rem; }
+        .newsletter h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .newsletter-form { display: flex; justify-content: center; gap: 1rem; max-width: 500px; margin: 2rem auto; }
+        .newsletter-form input { padding: 1rem; border: none; border-radius: 25px; flex: 1; }
+        .newsletter-form button { background: white; color: #27ae60; border: none; padding: 1rem 2rem; border-radius: 25px; cursor: pointer; }
+        .privacy-note { margin-top: 1rem; }
+        .privacy-note a { color: #ecf0f1; }
+        
+        /* Contact */
+        .contact { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; display: flex; gap: 4rem; align-items: flex-start; background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .contact-info { flex: 1; }
+        .contact-info h3 { margin-bottom: 1rem; color: #27ae60; }
+        .contact-form { flex: 1; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid #bdc3c7; border-radius: 5px; }
+        .contact-form button { background: #27ae60; color: white; border: none; padding: 1rem 2rem; border-radius: 25px; cursor: pointer; width: 100%; }
+        .social-links { display: flex; gap: 1rem; margin-top: 1rem; }
+        .social-links a { color: #27ae60; text-decoration: none; font-size: 1.5rem; }
+        
+        /* Footer */
+        .footer { background: #2c3e50; color: white; padding: 3rem 2rem 1rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .footer-section h4 { margin-bottom: 1rem; color: #27ae60; }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #bdc3c7; text-decoration: none; }
+        .footer-newsletter { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .footer-newsletter input { flex: 1; padding: 0.5rem; border: none; border-radius: 5px; }
+        .footer-newsletter button { background: #27ae60; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #34495e; color: #bdc3c7; }
+        
+        /* Additional Sections */
+        .case-studies { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; background: #f0f8f0; border-radius: 10px; padding: 2rem; }
+        .case-studies h2 { font-size: 2.5rem; text-align: center; margin-bottom: 1rem; color: #27ae60; }
+        .cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .case { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(39,174,96,0.1); }
+        .case img { width: 100%; height: 200px; object-fit: cover; }
+        .case-content { padding: 1.5rem; }
+        
+        .sustainability { background: linear-gradient(135deg, #52be80 0%, #58d68d 100%); color: white; padding: 4rem 2rem; text-align: center; }
+        .sustainability h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .sustainability p { max-width: 800px; margin: 0 auto 2rem; font-size: 1.1rem; }
+        .sustainability-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto; }
+        .sust-item { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 10px; }
+        
+        .partners { background: #f9f9f9; padding: 4rem 2rem; }
+        .partners h2 { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #27ae60; }
+        .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .partner { text-align: center; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(39,174,96,0.1); }
+        .partner img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 1rem; }
+        
+        /* Expanded */
+        .expanded-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .expanded-product { border: 1px solid #ecf0f1; border-radius: 8px; padding: 1rem; background: #fff; }
+        .expanded-product h4 { margin-bottom: 0.5rem; color: #27ae60; }
+        .expanded-product ul { list-style: disc; padding-left: 1.5rem; color: #7f8c8d; }
+        
+        .detailed-faq { max-width: 1000px; margin: 2rem auto; }
+        .detailed-faq-item { margin-bottom: 2rem; border-bottom: 1px solid #ecf0f1; padding-bottom: 1rem; }
+        .detailed-faq-item h4 { cursor: pointer; color: #27ae60; margin-bottom: 1rem; font-weight: 600; }
+        .detailed-faq-content { display: none; color: #7f8c8d; }
+        
+        .more-testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .more-testimonial { background: #e8f5e8; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #27ae60; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav { flex-direction: column; gap: 1rem; }
+            .hero { flex-direction: column; text-align: center; }
+            .about { flex-direction: column; }
+            .contact { flex-direction: column; }
+            .newsletter-form { flex-direction: column; }
+            .stats { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">EcoHaven Sustain</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#brands">Brands</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#cases">Stories</a></li>
+                <li><a href="#sustainability">Sustainability</a></li>
+                <li><a href="#partners">Partners</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+                <span class="search-icon">🔍</span>
+                <span class="cart-icon">🛒 <span class="cart-count">0</span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section - Expanded Nature -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Transform Your Home with Eco-Conscious Living</h1>
+            <p>EcoHaven offers a sanctuary of sustainable home essentials, crafted from renewable materials like bamboo, recycled wood, and organic cotton. Our collection promotes harmony with nature, featuring energy-efficient designs that reduce your carbon footprint while enhancing everyday comfort. From solar-powered lighting to zero-waste kitchenware, discover products that support ethical manufacturing and planetary health. Embrace a greener lifestyle with items tested for durability and environmental impact.</p>
+            <p>Founded in 2012 by environmental advocates, EcoHaven has restored over 1 million acres through partnerships with reforestation projects. Our supply chain is transparent, with blockchain tracking for material origins. Join thousands of eco-warriors creating positive change, one home at a time.</p>
+            <p>With certifications from Fair Trade, FSC, and GOTS, every purchase contributes to a sustainable future, including community support in sourcing regions.</p>
+            <button class="cta-button">Shop Sustainably</button>
+        </div>
+        <div class="hero-slider">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Eco Home" class="slide active">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sustainable Furniture" class="slide">
+            <img src="https://images.unsplash.com/photo-1600585152325-6d1a9e2e91bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Green Kitchen" class="slide">
+            <img src="https://images.unsplash.com/photo-1558618047-3c1df4b8e61e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Natural Decor" class="slide">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Renewable Energy Home" class="slide">
+            <button class="prev">❮</button>
+            <button class="next">❯</button>
+        </div>
+    </section>
+
+    <!-- Promo Banner - Green Deal -->
+    <section class="promo-banner">
+        <div class="banner-content">
+            <h2>Earth Day Special: 25% Off All Bamboo Collections</h2>
+            <p>Celebrate sustainability with fast-growing, renewable bamboo products that are naturally antibacterial and versatile. Perfect for creating an eco-friendly haven in your living space. Includes free carbon offset for every order and planting a tree per purchase. Act now to furnish your home with nature's finest.</p>
+            <div class="promo-timer">Promotion Ends in: <span id="timer">00:00:00</span></div>
+            <button class="banner-button">Go Green Today</button>
+        </div>
+    </section>
+
+    <!-- About Section - Green Mission -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Nurturing Homes and the Planet Since 2012</h2>
+                <p>EcoHaven was launched to bridge sustainable living with accessible design, sourcing from global cooperatives using non-toxic materials and low-energy processes. We prioritize products that last, reducing waste and promoting circular economy principles. Our team of eco-designers ensures every item meets rigorous standards for biodegradability and recyclability.</p>
+                <p>Through initiatives like product take-back programs and material innovation labs, we continually evolve to meet environmental challenges. We've diverted 500 tons of plastic from oceans and supported 200 artisan communities. Sustainable living is simple with EcoHaven—beautiful, functional, and earth-friendly.</p>
+                <p>Our impact reports detail carbon savings and biodiversity contributions, empowering you to make informed, positive choices for your home and the world.</p>
+                <div class="stats">
+                    <div class="stat">
+                        <h3>10+</h3>
+                        <p>Years Committed</p>
+                    </div>
+                    <div class="stat">
+                        <h3>1M+</h3>
+                        <p>Acres Restored</p>
+                    </div>
+                    <div class="stat">
+                        <h3>500T</h3>
+                        <p>Waste Diverted</p>
+                    </div>
+                    <div class="stat">
+                        <h3>$20M+</h3>
+                        <p>Eco Impact</p>
+                    </div>
+                    <div class="stat">
+                        <h3>200+</h3>
+                        <p>Communities Supported</p>
+                    </div>
+                    <div class="stat">
+                        <h3>50K+</h3>
+                        <p>Happy Homes</p>
+                    </div>
+                </div>
+            </div>
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Sustainable Home" class="about-image">
+        </div>
+    </section>
+
+    <!-- Trust Signals - Eco Badges -->
+    <section class="trust-signals">
+        <div class="signals-container">
+            <div class="signal">🌿</div>
+            <p>100% Renewable Materials</p>
+            <div class="signal">🔒</div>
+            <p>Non-Toxic Certifications</p>
+            <div class="signal">🌍</div>
+            <p>Global Eco-Shipping</p>
+            <div class="signal">♻️</div>
+            <p>Recyclable Packaging</p>
+            <div class="signal">🌱</div>
+            <p>Fair Trade Sourcing</p>
+            <div class="signal">☀️</div>
+            <p>Solar-Powered Fulfillment</p>
+            <div class="signal">⭐</div>
+            <p>Verified Sustainability</p>
+        </div>
+    </section>
+
+    <!-- Featured Products - 25+ Eco Items -->
+    <section id="products" class="products">
+        <h2>Sustainable Home Essentials</h2>
+        <p class="section-subtitle">Curated for eco-conscious living, each product features life-cycle assessments, care tips, and impact metrics to guide your green choices.</p>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Bamboo Table">
+                <div class="product-info">
+                    <h3>Bamboo Dining Table</h3>
+                    <p class="price">$299</p>
+                    <p class="description">Renewable bamboo top with recycled metal legs, seats 6, easy assembly. Grows 3x faster than wood, sequesters carbon effectively.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600585152325-6d1a9e2e91bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Organic Cotton Bedding">
+                <div class="product-info">
+                    <h3>Organic Cotton Bed Set</h3>
+                    <p class="price">$149</p>
+                    <p class="description">GOTS-certified cotton, breathable weave, no pesticides. Hypoallergenic, machine-washable, supports organic farming initiatives.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1558618047-3c1df4b8e61e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Recycled Glass Vases">
+                <div class="product-info">
+                    <h3>Recycled Glass Vase Set</h3>
+                    <p class="price">$79</p>
+                    <p class="description">Hand-blown from post-consumer glass, unique colors, dishwasher-safe. Reduces landfill waste by 90% compared to new glass production.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Solar Lamp">
+                <div class="product-info">
+                    <h3>Solar-Powered Table Lamp</h3>
+                    <p class="price">$89</p>
+                    <p class="description">LED bulb, 8-hour charge, weather-resistant for indoor/outdoor. Saves 1,000 lbs of CO2 over lifetime vs traditional lamps.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <!-- More products... -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Hemp Curtains">
+                <div class="product-info">
+                    <h3>Hemp Curtain Panels</h3>
+                    <p class="price">$129</p>
+                    <p class="description">Natural hemp fabric, UV-blocking, easy hang. Biodegradable, grows without chemicals, supports soil regeneration.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cork Mat">
+                <div class="product-info">
+                    <h3>Cork Yoga & Floor Mat</h3>
+                    <p class="price">$59</p>
+                    <p class="description">Harvested cork, non-slip, lightweight. Renewable every 9 years, antimicrobial properties for clean spaces.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Recycled Plastic Chairs">
+                <div class="product-info">
+                    <h3>Recycled Plastic Adirondack Chair</h3>
+                    <p class="price">$199</p>
+                    <p class="description">From ocean-bound plastic, weatherproof, stackable. Diverts 2,000 plastic bottles per chair from pollution.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Bamboo Toothbrush Set">
+                <div class="product-info">
+                    <h3>Bamboo Toothbrush Family Set</h3>
+                    <p class="price">$25</p>
+                    <p class="description">Biodegradable handles, soft bristles, compostable. Replaces 4 million plastic toothbrushes annually in our program.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Organic Wool Blanket">
+                <div class="product-info">
+                    <h3>Organic Wool Throw Blanket</h3>
+                    <p class="price">$169</p>
+                    <p class="description">Merino wool from humane farms, warm and breathable. Hypoallergenic, supports regenerative grazing practices.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Bee Wax Wraps">
+                <div class="product-info">
+                    <h3>Beeswax Food Wraps</h3>
+                    <p class="price">$35</p>
+                    <p class="description">Cotton infused with beeswax, reusable 1 year, plastic-free alternative. Supports local beekeepers and reduces waste.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Clay Pots">
+                <div class="product-info">
+                    <h3>Handmade Clay Plant Pots</h3>
+                    <p class="price">$49</p>
+                    <p class="description">Fired clay from local clay, drainage holes, natural finish. Low-fire process minimizes energy use, promotes indoor greenery.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Recycled Wood Shelf">
+                <div class="product-info">
+                    <h3>Reclaimed Wood Wall Shelf</h3>
+                    <p class="price">$89</p>
+                    <p class="description">From salvaged barn wood, floating design, easy install. Saves old-growth trees, each unique grain tells a story.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1558618047-3c1df4b8e61e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Hemp Rugs">
+                <div class="product-info">
+                    <h3>Hemp Area Rug</h3>
+                    <p class="price">$179</p>
+                    <p class="description">Woven hemp fibers, durable and soft, machine-washable. Grows in poor soil, requires minimal water and pesticides.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Solar Charger">
+                <div class="product-info">
+                    <h3>Portable Solar Charger</h3>
+                    <p class="price">$69</p>
+                    <p class="description">Folds compact, charges phones, weatherproof. Harnesses renewable sun energy, reduces reliance on grid power.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Bamboo Kitchen Set">
+                <div class="product-info">
+                    <h3>Bamboo Cutlery Set</h3>
+                    <p class="price">$45</p>
+                    <p class="description">8-piece set, compostable handles, stainless blades. Replaces plastic utensils, biodegradable end-of-life.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Natural Soap">
+                <div class="product-info">
+                    <h3>Organic Soap Bar Pack</h3>
+                    <p class="price">$22</p>
+                    <p class="description">Essential oils, no synthetics, palm-oil free. Vegan, cruelty-free, packaged in recycled paper.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Jute Baskets">
+                <div class="product-info">
+                    <h3>Jute Storage Baskets</h3>
+                    <p class="price">$39</p>
+                    <p class="description">Handwoven jute, sturdy handles, multi-use. Grows abundantly, supports rural weavers in developing regions.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Seagrass Chair">
+                <div class="product-info">
+                    <h3>Seagrass Woven Chair</h3>
+                    <p class="price">$249</p>
+                    <p class="description">Natural seagrass frame, comfortable cushion, indoor/outdoor. Harvested sustainably from coastal areas.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cotton Towels">
+                <div class="product-info">
+                    <h3>Organic Cotton Bath Towels</h3>
+                    <p class="price">$65</p>
+                    <p class="description">Turkish weave, soft and absorbent, set of 4. No chemical treatments, supports organic cotton farmers.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Wooden Toys">
+                <div class="product-info">
+                    <h3>Sustainable Wooden Toys</h3>
+                    <p class="price">$35</p>
+                    <p class="description">FSC-certified wood, non-toxic paint, safe for kids. Promotes imaginative play without plastic waste.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1610945263386-2b47b6991461?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Compost Bin">
+                <div class="product-info">
+                    <h3>Kitchen Compost Bin</h3>
+                    <p class="price">$55</p>
+                    <p class="description">Stainless steel, odor-filter, countertop. Turns waste into compost, reducing methane emissions by 30% in homes.</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <!-- Expanded with lists -->
+            <div class="expanded-product">
+                <h4>Bamboo Flooring Kit</h4>
+                <p>$199</p>
+                <ul>
+                    <li>20 sq ft coverage</li>
+                    <li>Easy-click installation</li>
+                    <li>Water-resistant finish</li>
+                    <li>Renews in 3-5 years</li>
+                </ul>
+            </div>
+            <div class="expanded-product">
+                <h4>Recycled Bottle Lights</h4>
+                <p>$89</p>
+                <ul>
+                    <li>LED string lights</li>
+                    <li>From 100% recycled glass</li>
+                    <li>Solar-powered option</li>
+                    <li>Indoor/outdoor use</li>
+                </ul>
+            </div>
+            <div class="expanded-product">
+                <h4>Organic Herb Garden</h4>
+                <p>$45</p>
+                <ul>
+                    <li>Seed starters included</li>
+                    <li>Wooden planter box</li>
+                    <li>No pesticides needed</li>
+                    <li>Indoor growing kit</li>
+                </ul>
+            </div>
+            <div class="expanded-product">
+                <h4>Eco Insulation Panels</h4>
+                <p>$299</p>
+                <ul>
+                    <li>Recycled denim material</li>
+                    <li>R-value 13</li>
+                    <li>Fire-resistant</li>
+                    <li>Easy DIY install</li>
+                </ul>
+            </div>
+            <div class="expanded-product">
+                <h4>Natural Paint Set</h4>
+                <p>$79</p>
+                <ul>
+                    <li>Low-VOC formula</li>
+                    <li>Made from milk protein</li>
+                    <li>Scrub-resistant</li>
+                    <li>Non-toxic for kids' rooms</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories - 12+ Eco Categories -->
+    <section id="categories" class="categories">
+        <h2>Eco-Friendly Home Categories</h2>
+        <p class="section-subtitle">Explore sections with material transparency, care guides, and carbon footprint calculators for informed choices.</p>
+        <div class="categories-grid">
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Furniture">
+                <h3>Sustainable Furniture</h3>
+                <p>Bamboo, reclaimed wood, modular designs for long-lasting setups.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1600585152325-6d1a9e2e91bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Kitchen">
+                <h3>Green Kitchenware</h3>
+                <p>Compostable utensils, beeswax wraps, energy-efficient appliances.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Bedroom">
+                <h3>Organic Bedroom</h3>
+                <p>Natural mattresses, linen sheets, low-EMF lighting.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1558618047-3c1df4b8e61e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Bath">
+                <h3>Eco Bathroom</h3>
+                <p>Bamboo fixtures, plant-based soaps, water-saving devices.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Decor">
+                <h3>Natural Decor</h3>
+                <p>Recycled art, seagrass baskets, living walls.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1610945263386-2b47b6991461?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Lighting">
+                <h3>Solar Lighting</h3>
+                <p>LED solar lamps, motion sensors, energy-harvesting tech.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Textiles">
+                <h3>Organic Textiles</h3>
+                <p>Hemp rugs, cotton curtains, wool throws.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Storage">
+                <h3>Green Storage</h3>
+                <p>Recycled plastic bins, wooden shelves, canvas organizers.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Garden">
+                <h3>Indoor Garden</h3>
+                <p>Clay pots, hydroponics, seed kits.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Cleaning">
+                <h3>Natural Cleaning</h3>
+                <p>Vinegar-based solutions, bamboo brushes, refill stations.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Energy">
+                <h3>Renewable Energy</h3>
+                <p>Solar panels, wind chimes, efficient bulbs.</p>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Waste">
+                <h3>Zero-Waste</h3>
+                    <p>Compost bins, reusable bags, upcycled items.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brands - 15+ Eco Brands -->
+        <section id="brands" class="brands">
+            <h2>Trusted Sustainable Brands</h2>
+            <p class="section-subtitle">Partners committed to green innovation, with transparency reports and impact metrics for each collaboration.</p>
+            <div class="brands-grid">
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Bamboo Co">
+                    <p>Bamboo Innovators</p>
+                </div>
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Hemp Works">
+                    <p>Hemp Harvest</p>
+                </div>
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Reclaim Wood">
+                    <p>Reclaimed Designs</p>
+                </div>
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Organic Cotton">
+                    <p>Cotton Fields</p>
+                </div>
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Solar Tech">
+                    <p>Solar Innovations</p>
+                </div>
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Cork Natural">
+                    <p>Cork Essentials</p>
+                </div>
+                <div class="brand-logo">
+                    <img src="https://images.unsplash.com/photo-1558618047-3c
